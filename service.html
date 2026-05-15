@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Services – CinemaX</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --red: #e50914;
+            --red-dim: #9b0610;
+            --maroon: #5c0000;
+            --gold: #f5c518;
+            --bg: #080810;
+            --bg2: #0f0f18;
+            --bg3: #161620;
+            --card: #111119;
+            --text: #f2f1f8;
+            --muted: #7a7992;
+            --border: rgba(255,255,255,.07);
+            --head: 'Bebas Neue',sans-serif;
+            --body: 'Barlow',sans-serif;
+            --cond: 'Barlow Condensed',sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            overflow-x: hidden;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--red);
+            border-radius: 3px;
+        }
+
+        .cx-nav {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: rgba(92,0,0,.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            padding: 10px 0;
+        }
+
+            .cx-nav .container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+        .cx-brand {
+            font-family: var(--head);
+            font-size: 2rem;
+            letter-spacing: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .cx-brand i {
+                color: var(--gold);
+            }
+
+            .cx-brand .x {
+                color: var(--red);
+            }
+
+        .cx-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+        }
+
+            .cx-links a {
+                font-size: .78rem;
+                font-weight: 600;
+                letter-spacing: .8px;
+                text-transform: uppercase;
+                color: rgba(255,255,255,.7);
+                padding: 7px 14px;
+                border-radius: 20px;
+                transition: .2s;
+            }
+
+                .cx-links a:hover, .cx-links a.active {
+                    color: #fff;
+                    background: rgba(255,255,255,.1);
+                }
+
+        .btn-booknow {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 22px;
+            font-weight: 700;
+            font-size: .78rem;
+            text-transform: uppercase;
+            transition: .2s;
+            cursor: pointer;
+            font-family: var(--body);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .btn-booknow:hover {
+                background: var(--red-dim);
+                transform: translateY(-2px);
+            }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+            .hamburger span {
+                width: 22px;
+                height: 2px;
+                background: #fff;
+                border-radius: 2px;
+                display: block;
+                transition: .3s;
+            }
+
+            .hamburger.open span:nth-child(1) {
+                transform: translateY(7px) rotate(45deg);
+            }
+
+            .hamburger.open span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.open span:nth-child(3) {
+                transform: translateY(-7px) rotate(-45deg);
+            }
+
+        .mob-drawer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 850;
+            background: rgba(5,5,10,.97);
+            backdrop-filter: blur(10px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+        }
+
+            .mob-drawer.open {
+                display: flex;
+            }
+
+            .mob-drawer a {
+                font-family: var(--head);
+                font-size: 2.4rem;
+                letter-spacing: 4px;
+                color: rgba(255,255,255,.85);
+                transition: .2s;
+            }
+
+                .mob-drawer a:hover {
+                    color: var(--gold);
+                }
+
+        .mob-close {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,.5);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* PAGE HERO */
+        .page-hero {
+            position: relative;
+            padding: 80px 0 64px;
+            text-align: center;
+            overflow: hidden;
+            background: linear-gradient(160deg,#020208 0%,#1e0000 45%,#020208 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+            .page-hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 65% 65% at 50% 100%,rgba(229,9,20,.12),transparent 65%);
+            }
+
+            .page-hero::after {
+                content: 'SERVICES';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                font-family: var(--head);
+                font-size: clamp(6rem,18vw,13rem);
+                letter-spacing: 10px;
+                color: rgba(255,255,255,.02);
+                pointer-events: none;
+                white-space: nowrap;
+            }
+
+            .page-hero .container {
+                position: relative;
+                z-index: 1;
+            }
+
+        .ph-tag {
+            display: inline-block;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(245,197,24,.3);
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .ph-title {
+            font-family: var(--head);
+            font-size: clamp(3rem,7vw,5.5rem);
+            letter-spacing: 5px;
+            line-height: .95;
+            margin-bottom: 10px;
+        }
+
+            .ph-title span {
+                color: var(--red);
+            }
+
+        .ph-sub {
+            color: var(--muted);
+            font-size: .92rem;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .breadcrumb {
+            justify-content: center;
+            background: transparent;
+            margin: 14px 0 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--gold);
+            font-size: .8rem;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: rgba(255,255,255,.2);
+        }
+
+        /* SECTIONS */
+        .sec {
+            padding: 80px 0;
+        }
+
+        .sec-alt {
+            background: var(--bg2);
+        }
+
+        .sec-dark {
+            background: var(--bg3);
+        }
+
+        .sec-tag {
+            display: inline-block;
+            font-size: .67rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(245,197,24,.3);
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .sec-title {
+            font-family: var(--head);
+            font-size: clamp(2rem,4.5vw,3.2rem);
+            letter-spacing: 3px;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+            .sec-title .red {
+                color: var(--red);
+            }
+
+        .sec-sub {
+            color: var(--muted);
+            font-size: .88rem;
+            line-height: 1.7;
+        }
+
+        .sec-line {
+            width: 56px;
+            height: 3px;
+            background: linear-gradient(90deg,var(--red),var(--gold));
+            border-radius: 2px;
+            margin: 14px auto 0;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .65s ease,transform .65s ease;
+        }
+
+            .reveal.in {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        .d1 {
+            transition-delay: .1s;
+        }
+
+        .d2 {
+            transition-delay: .2s;
+        }
+
+        .d3 {
+            transition-delay: .3s;
+        }
+
+        .d4 {
+            transition-delay: .4s;
+        }
+
+        /* SERVICE CARDS */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .svc-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px 26px;
+            position: relative;
+            overflow: hidden;
+            transition: .3s;
+        }
+
+            .svc-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg,var(--red),var(--gold));
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: .35s;
+            }
+
+            .svc-card:hover {
+                border-color: rgba(229,9,20,.3);
+                transform: translateY(-6px);
+                box-shadow: 0 20px 50px rgba(0,0,0,.5);
+            }
+
+                .svc-card:hover::before {
+                    transform: scaleX(1);
+                }
+
+        .svc-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            background: rgba(229,9,20,.1);
+            border: 1px solid rgba(229,9,20,.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--red);
+            margin-bottom: 20px;
+            transition: .3s;
+        }
+
+        .svc-card:hover .svc-icon {
+            background: rgba(229,9,20,.18);
+            border-color: rgba(229,9,20,.4);
+        }
+
+        .svc-title {
+            font-family: var(--head);
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .svc-desc {
+            color: var(--muted);
+            font-size: .87rem;
+            line-height: 1.75;
+            margin-bottom: 18px;
+        }
+
+        .svc-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .svc-tag {
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            background: rgba(229,9,20,.1);
+            border: 1px solid rgba(229,9,20,.2);
+            color: rgba(229,9,20,.9);
+            padding: 3px 10px;
+            border-radius: 8px;
+        }
+
+        /* JOB INTERESTS */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+            gap: 20px;
+        }
+
+        .job-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 20px;
+            transition: .3s;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+            .job-card:hover {
+                border-color: rgba(245,197,24,.3);
+                transform: translateX(5px);
+            }
+
+        .job-num {
+            font-family: var(--head);
+            font-size: 2.2rem;
+            color: rgba(229,9,20,.25);
+            letter-spacing: 1px;
+            line-height: 1;
+            flex-shrink: 0;
+            min-width: 40px;
+        }
+
+        .job-title {
+            font-family: var(--cond);
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            margin-bottom: 6px;
+        }
+
+        .job-desc {
+            color: var(--muted);
+            font-size: .82rem;
+            line-height: 1.6;
+        }
+
+        /* PRICING */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+            gap: 20px;
+        }
+
+        .price-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 30px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: .3s;
+        }
+
+            .price-card.featured {
+                border-color: var(--gold);
+                box-shadow: 0 0 0 1px rgba(245,197,24,.15);
+            }
+
+            .price-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .price-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--gold);
+            color: #000;
+            font-size: .6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 8px;
+        }
+
+        .price-name {
+            font-family: var(--head);
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .price-amount {
+            font-family: var(--head);
+            font-size: 3rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            line-height: 1;
+            margin: 14px 0;
+        }
+
+            .price-amount span {
+                font-size: 1rem;
+                color: var(--muted);
+                font-family: var(--body);
+            }
+
+        .price-features {
+            list-style: none;
+            text-align: left;
+            margin: 16px 0 24px;
+        }
+
+            .price-features li {
+                padding: 8px 0;
+                border-bottom: 1px solid var(--border);
+                font-size: .84rem;
+                color: rgba(242,241,248,.75);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+                .price-features li:last-child {
+                    border-bottom: none;
+                }
+
+                .price-features li i {
+                    color: var(--gold);
+                    font-size: .75rem;
+                    flex-shrink: 0;
+                }
+
+        .btn-price {
+            width: 100%;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: var(--head);
+            font-size: 1.1rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+            .btn-price:hover {
+                background: var(--red-dim);
+                transform: translateY(-2px);
+            }
+
+            .btn-price.outline {
+                background: transparent;
+                border: 1.5px solid rgba(255,255,255,.2);
+                color: rgba(255,255,255,.8);
+            }
+
+                .btn-price.outline:hover {
+                    border-color: rgba(229,9,20,.5);
+                    color: #fff;
+                    background: rgba(229,9,20,.07);
+                }
+
+        /* CTA */
+        .cta-strip {
+            background: linear-gradient(135deg,var(--maroon) 0%,#3a0000 50%,var(--maroon) 100%);
+            padding: 70px 0;
+            text-align: center;
+            border-top: 1px solid rgba(229,9,20,.2);
+        }
+
+            .cta-strip h2 {
+                font-family: var(--head);
+                font-size: clamp(2rem,5vw,3.5rem);
+                letter-spacing: 3px;
+                margin-bottom: 10px;
+            }
+
+                .cta-strip h2 span {
+                    color: var(--gold);
+                }
+
+            .cta-strip p {
+                color: rgba(255,255,255,.55);
+                font-size: .93rem;
+                margin-bottom: 28px;
+            }
+
+        .btn-cta {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 14px 36px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: .95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            transition: .25s;
+            cursor: pointer;
+            font-family: var(--body);
+        }
+
+            .btn-cta:hover {
+                background: var(--red-dim);
+                transform: translateY(-3px);
+                box-shadow: 0 14px 34px rgba(229,9,20,.45);
+            }
+
+        /* FOOTER */
+        .cx-footer {
+            background: #000;
+            border-top: 1px solid var(--border);
+            padding: 56px 0 22px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 36px;
+            margin-bottom: 44px;
+        }
+
+        .footer-brand {
+            font-family: var(--head);
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .footer-brand i {
+                color: var(--gold);
+            }
+
+            .footer-brand .x {
+                color: var(--red);
+            }
+
+        .footer-desc {
+            color: var(--muted);
+            font-size: .83rem;
+            line-height: 1.75;
+            margin-bottom: 18px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 9px;
+        }
+
+            .footer-socials a {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                color: var(--muted);
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: .88rem;
+                transition: .2s;
+            }
+
+                .footer-socials a:hover {
+                    background: var(--red);
+                    border-color: var(--red);
+                    color: #fff;
+                }
+
+        .footer-col h5 {
+            font-family: var(--head);
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--muted);
+            font-size: .83rem;
+            margin-bottom: 9px;
+            transition: .2s;
+        }
+
+            .footer-col a:hover {
+                color: #fff;
+                padding-left: 4px;
+            }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+            .footer-bottom p {
+                color: var(--muted);
+                font-size: .77rem;
+            }
+
+            .footer-bottom span {
+                color: var(--gold);
+            }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 500;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            font-size: .95rem;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: .3s;
+            box-shadow: 0 4px 18px rgba(229,9,20,.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .back-to-top.show {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .back-to-top:hover {
+                transform: translateY(-3px);
+            }
+
+        @media(max-width:1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:768px) {
+            .cx-links, .btn-booknow {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="cx-nav">
+        <div class="container">
+            <a href="index.html" class="cx-brand"><i class="fa-solid fa-film"></i>CINEMA<span class="x">X</span></a>
+            <ul class="cx-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="qualifications.html">Qualifications</a></li>
+                <li><a href="service.html" class="active">Services</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="listedMovies.html">All Movies</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="booking.html" class="btn-booknow"><i class="fa-solid fa-ticket"></i> Book Now</a>
+            <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <div class="mob-drawer" id="drawer">
+        <button class="mob-close" id="drawClose"><i class="fa-solid fa-xmark"></i></button>
+        <a href="index.html">Home</a><a href="about.html">About</a>
+        <a href="qualifications.html">Qualifications</a><a href="services.html">Services</a>
+        <a href="booking.html">Booking</a><a href="listedMovies.html">All Movies</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <div class="container">
+            <div class="ph-tag"><i class="fa-solid fa-briefcase"></i> What We Offer</div>
+            <h1 class="ph-title">OUR <span>SERVICES</span></h1>
+            <p class="ph-sub">Cinema experiences, web solutions &amp; digital services — all in one place.</p>
+            <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="index.html">Home</a></li><li class="breadcrumb-item active">Services</li></ol></nav>
+        </div>
+    </div>
+
+    <!-- CINEMA SERVICES -->
+    <section class="sec">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="sec-tag">Cinema Services</div>
+                <h2 class="sec-title">WHAT CINEMAX <span class="red">OFFERS</span></h2>
+                <div class="sec-line"></div>
+                <p class="sec-sub" style="margin-top:14px;max-width:500px;margin-left:auto;margin-right:auto;">From standard screenings to VIP private events — we cover every cinematic need.</p>
+            </div>
+            <div class="services-grid">
+                <div class="svc-card reveal">
+                    <div class="svc-icon"><i class="fa-solid fa-ticket"></i></div>
+                    <div class="svc-title">Online Ticket Booking</div>
+                    <p class="svc-desc">Book your seat instantly from any device. Choose your movie, showtime, hall, and seat — receive instant email confirmation with your receipt and barcode.</p>
+                    <div class="svc-tags"><span class="svc-tag">Instant</span><span class="svc-tag">Secure</span><span class="svc-tag">24/7</span></div>
+                </div>
+                <div class="svc-card reveal d1">
+                    <div class="svc-icon"><i class="fa-solid fa-couch"></i></div>
+                    <div class="svc-title">VIP &amp; Premium Seating</div>
+                    <p class="svc-desc">Upgrade to our VIP recliner halls for an unmatched viewing experience. Extra legroom, premium sound systems, and dedicated service included.</p>
+                    <div class="svc-tags"><span class="svc-tag">VIP</span><span class="svc-tag">Recliners</span><span class="svc-tag">IMAX</span></div>
+                </div>
+                <div class="svc-card reveal d2">
+                    <div class="svc-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="svc-title">Group Bookings</div>
+                    <p class="svc-desc">Groups of 10+ receive discounted rates and dedicated seating arrangements. Perfect for schools, corporate events, birthday parties, and team outings.</p>
+                    <div class="svc-tags"><span class="svc-tag">Discount</span><span class="svc-tag">Events</span><span class="svc-tag">Corporate</span></div>
+                </div>
+                <div class="svc-card reveal d3">
+                    <div class="svc-icon"><i class="fa-solid fa-film"></i></div>
+                    <div class="svc-title">Private Screenings</div>
+                    <p class="svc-desc">Book an entire hall exclusively for your event. Ideal for premieres, corporate functions, or special celebrations. Custom branding options available.</p>
+                    <div class="svc-tags"><span class="svc-tag">Exclusive</span><span class="svc-tag">Custom</span><span class="svc-tag">Branded</span></div>
+                </div>
+                <div class="svc-card reveal">
+                    <div class="svc-icon"><i class="fa-solid fa-code"></i></div>
+                    <div class="svc-title">Web Development</div>
+                    <p class="svc-desc">Professional website design and development using HTML5, CSS3, JavaScript, and Bootstrap. Responsive, modern, and built to perform on all devices.</p>
+                    <div class="svc-tags"><span class="svc-tag">HTML/CSS</span><span class="svc-tag">JavaScript</span><span class="svc-tag">Responsive</span></div>
+                </div>
+                <div class="svc-card reveal d1">
+                    <div class="svc-icon"><i class="fa-solid fa-paintbrush"></i></div>
+                    <div class="svc-title">UI/UX Design</div>
+                    <p class="svc-desc">Creating visually stunning, user-friendly digital interfaces. From wireframes to final pixel-perfect designs — I bring ideas to life with modern design systems.</p>
+                    <div class="svc-tags"><span class="svc-tag">Design</span><span class="svc-tag">UX</span><span class="svc-tag">Figma</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JOB INTERESTS -->
+    <section class="sec sec-alt">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="sec-tag">Career Goals</div>
+                <h2 class="sec-title">JOB <span class="red">INTERESTS</span></h2>
+                <div class="sec-line"></div>
+                <p class="sec-sub" style="margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;">As an IT student at Nelson Mandela University, these are the career paths I am actively pursuing and passionate about.</p>
+            </div>
+            <div class="jobs-grid">
+                <div class="job-card reveal">
+                    <div class="job-num">01</div>
+                    <div>
+                        <div class="job-title">Front-End Developer</div>
+                        <p class="job-desc">Designing and building beautiful, responsive web interfaces using HTML5, CSS3, JavaScript, and Bootstrap. Focus on UX, animation, and performance.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal d1">
+                    <div class="job-num">02</div>
+                    <div>
+                        <div class="job-title">Full-Stack Developer</div>
+                        <p class="job-desc">Building complete web applications from front to back — combining UI development with database management, APIs, and server-side logic.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal d2">
+                    <div class="job-num">03</div>
+                    <div>
+                        <div class="job-title">Software Developer</div>
+                        <p class="job-desc">Developing desktop and mobile applications using C#, OOP principles, and the SDLC. Passionate about clean, maintainable, and scalable code.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal d3">
+                    <div class="job-num">04</div>
+                    <div>
+                        <div class="job-title">Systems Analyst</div>
+                        <p class="job-desc">Analysing business requirements and designing efficient information systems and databases. Using ERDs, data modelling, and process flows to solve problems.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-num">05</div>
+                    <div>
+                        <div class="job-title">IT Project Manager</div>
+                        <p class="job-desc">Planning and managing technology projects from inception to delivery. Using project management tools to keep teams aligned and on schedule.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal d1">
+                    <div class="job-num">06</div>
+                    <div>
+                        <div class="job-title">Database Administrator</div>
+                        <p class="job-desc">Designing, implementing, and maintaining relational databases using SQL. Applying normalization, ERDs, and query optimization for performance.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal d2">
+                    <div class="job-num">07</div>
+                    <div>
+                        <div class="job-title">Cybersecurity Analyst</div>
+                        <p class="job-desc">Protecting digital infrastructure from threats using tools like Kali Linux. Interested in ethical hacking, penetration testing, and network security.</p>
+                    </div>
+                </div>
+                <div class="job-card reveal d3">
+                    <div class="job-num">08</div>
+                    <div>
+                        <div class="job-title">UI/UX Designer</div>
+                        <p class="job-desc">Creating human-centred digital experiences with a focus on usability, accessibility, and beautiful visual design. Bridging creativity and technology.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="sec sec-dark">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="sec-tag">Cinema Tickets</div>
+                <h2 class="sec-title">TICKET <span class="red">PRICING</span></h2>
+                <div class="sec-line"></div>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <div class="price-name">STANDARD</div>
+                    <div class="price-amount">R90 <span>/ ticket</span></div>
+                    <ul class="price-features">
+                        <li><i class="fa-solid fa-check"></i> Hall 1 Standard Seating</li>
+                        <li><i class="fa-solid fa-check"></i> Any movie from our library</li>
+                        <li><i class="fa-solid fa-check"></i> 6 daily showtimes</li>
+                        <li><i class="fa-solid fa-check"></i> Instant email confirmation</li>
+                        <li><i class="fa-solid fa-check"></i> Digital receipt &amp; barcode</li>
+                    </ul>
+                    <button class="btn-price outline" onclick="window.location='booking.html'">Book Standard</button>
+                </div>
+                <div class="price-card featured reveal d1">
+                    <div class="price-badge">POPULAR</div>
+                    <div class="price-name">VIP RECLINER</div>
+                    <div class="price-amount">R150 <span>/ ticket</span></div>
+                    <ul class="price-features">
+                        <li><i class="fa-solid fa-check"></i> Hall 2 VIP Recliner Seats</li>
+                        <li><i class="fa-solid fa-check"></i> All standard benefits</li>
+                        <li><i class="fa-solid fa-check"></i> Extra legroom &amp; comfort</li>
+                        <li><i class="fa-solid fa-check"></i> Premium sound system</li>
+                        <li><i class="fa-solid fa-check"></i> Dedicated VIP entrance</li>
+                    </ul>
+                    <button class="btn-price" onclick="window.location='booking.html'">Book VIP</button>
+                </div>
+                <div class="price-card reveal d2">
+                    <div class="price-name">IMAX 3D</div>
+                    <div class="price-amount">R180 <span>/ ticket</span></div>
+                    <ul class="price-features">
+                        <li><i class="fa-solid fa-check"></i> Hall 3 IMAX Screen</li>
+                        <li><i class="fa-solid fa-check"></i> 3D glasses included</li>
+                        <li><i class="fa-solid fa-check"></i> Immersive surround sound</li>
+                        <li><i class="fa-solid fa-check"></i> All VIP benefits</li>
+                        <li><i class="fa-solid fa-check"></i> Best seat in the house</li>
+                    </ul>
+                    <button class="btn-price outline" onclick="window.location='booking.html'">Book IMAX</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-strip">
+        <div class="container" style="position:relative;z-index:1;">
+            <div class="reveal">
+                <div class="sec-tag" style="margin-bottom:16px">Get Started</div>
+                <h2>READY TO BOOK YOUR <span>EXPERIENCE?</span></h2>
+                <p>Choose your movie, pick your seat, and enjoy the show. It takes less than 60 seconds.</p>
+                <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+                    <button class="btn-cta" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book Now</button>
+                    <button class="btn-cta" style="background:transparent;border:1.5px solid rgba(255,255,255,.22);color:rgba(255,255,255,.85);" onclick="window.location='contact.html'"><i class="fa-solid fa-envelope"></i> Get a Quote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="cx-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand"><i class="fa-solid fa-film"></i> CINEMA<span class="x">X</span></div>
+                    <p class="footer-desc">Premium movie booking by Moroana Machoene Karel.<br>Gqeberha, Eastern Cape, South Africa.</p>
+                    <div class="footer-socials">
+                        <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Navigate</h5>
+                    <a href="index.html">Home</a><a href="about.html">About</a>
+                    <a href="qualifications.html">Qualifications</a><a href="services.html">Services</a>
+                    <a href="booking.html">Booking</a><a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Services</h5>
+                    <a href="booking.html">Online Booking</a>
+                    <a href="booking.html">VIP Seating</a>
+                    <a href="booking.html">Group Bookings</a>
+                    <a href="booking.html">Private Screenings</a>
+                    <a href="contact.html">Web Development</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact</h5>
+                    <a href="mailto:moroanakarell609@gmail.com"><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:7px"></i>moroanakarell609@gmail.com</a>
+                    <a href="mailto:s229071910@mandela.ac.za"><i class="fa-solid fa-graduation-cap" style="color:var(--gold);margin-right:7px"></i>s229071910@mandela.ac.za</a>
+                    <a href="tel:+27796617031"><i class="fa-solid fa-phone" style="color:var(--gold);margin-right:7px"></i>+27 79 661 7031</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 CinemaX | Built by <span>Moroana Machoene Karel</span></p>
+                <p>Made with <i class="fa-solid fa-heart" style="color:var(--red)"></i> for ITP2020</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="btt"><i class="fa-solid fa-chevron-up"></i></button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    const ham=document.getElementById('ham'),drawer=document.getElementById('drawer'),drawClose=document.getElementById('drawClose');
+    ham.addEventListener('click',()=>{ham.classList.toggle('open');drawer.classList.add('open');document.body.style.overflow='hidden';});
+    drawClose.addEventListener('click',()=>{ham.classList.remove('open');drawer.classList.remove('open');document.body.style.overflow='';});
+    drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');drawer.classList.remove('open');document.body.style.overflow='';}));
+    const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}});},{threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    const btt=document.getElementById('btt');
+    window.addEventListener('scroll',()=>btt.classList.toggle('show',scrollY>400));
+    btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+    </script>
+</body>
+</html>
