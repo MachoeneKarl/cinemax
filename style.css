@@ -1,0 +1,412 @@
+/* ============================================================
+   CINEMAX FULL UPDATED CSS
+   PREMIUM RED CINEMA THEME
+   ============================================================ */
+
+/* ============================================================
+   GLOBAL SETTINGS
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #8B0000 !important;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+
+.navbar {
+    background: rgba(60, 0, 0, 0.92) !important;
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    transition: 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: white !important;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    color: white !important;
+    margin: 0 10px;
+    transition: 0.3s ease;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #ff3b3b !important;
+    }
+
+    .nav-link.active {
+        color: #ff3b3b !important;
+        font-weight: bold;
+    }
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+
+.hero {
+    position: relative;
+    height: 500px;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('../images/cinema-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+    .hero h1 {
+        font-size: 60px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 0 0 15px rgba(255,0,0,0.5);
+    }
+
+    .hero p {
+        font-size: 20px;
+        color: #f2f2f2;
+        margin-bottom: 25px;
+    }
+
+/* ============================================================
+   HEADINGS
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    color: white;
+    text-shadow: 0 0 10px rgba(255,0,0,0.3);
+}
+
+p {
+    color: #f2f2f2;
+}
+
+/* Genre text */
+h7 {
+    color: #ffcccc;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ============================================================
+   MOVIES SECTION
+   ============================================================ */
+
+#movies {
+    background: linear-gradient(rgba(40,0,0,0.95), rgba(0,0,0,0.95)), url('../images/cinema-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+/* ============================================================
+   MOVIE CARDS
+   ============================================================ */
+
+.movie-card {
+    background-color: #1f1f1f !important;
+    color: white !important;
+    border: 1px solid #333;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border-radius: 12px;
+}
+
+    .movie-card:hover {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+
+    /* Movie Poster Images */
+    .movie-card img {
+        width: 100%;
+        height: 380px;
+        object-fit: cover;
+        transition: 0.5s ease;
+    }
+
+    .movie-card:hover img {
+        transform: scale(1.08);
+    }
+
+    /* Card Body */
+    .movie-card .card-body {
+        padding: 20px;
+    }
+
+/* Movie Title */
+.movie-card-title {
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Movie Description */
+.movie-card p {
+    color: #d6d6d6 !important;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Footer */
+#movies .card-footer {
+    background-color: #2d2d2d !important;
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    color: white;
+    padding: 15px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn-danger {
+    background: linear-gradient(45deg, #ff0000, #b30000);
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s ease;
+    padding: 10px 18px;
+    font-weight: bold;
+}
+
+    .btn-danger:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255,0,0,0.4);
+        background: linear-gradient(45deg, #ff1a1a, #cc0000);
+    }
+
+/* Custom Red Button */
+.btn-custom-red {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+    .btn-custom-red:hover {
+        background-color: white;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+/* ============================================================
+   BACK TO TOP BUTTON
+   ============================================================ */
+
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 10px;
+    z-index: 999;
+    transition: 0.3s ease;
+}
+
+    .back-to-top:hover {
+        background: white;
+        color: red;
+        transform: translateY(-5px);
+    }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+    background: #4b0000;
+    color: white;
+}
+
+    footer h4 {
+        font-weight: bold;
+    }
+
+    footer a {
+        transition: 0.3s ease;
+    }
+
+        footer a:hover {
+            color: red !important;
+        }
+
+/* ============================================================
+   DARK NAVY SECTION
+   ============================================================ */
+
+.bg-navy-dark {
+    background-color: #0a192f;
+}
+
+/* ============================================================
+   HERO MOVIE CARD IMAGE
+   ============================================================ */
+
+.hero-movie-card-img {
+    height: 220px !important;
+    object-fit: cover;
+}
+
+/* ============================================================
+   PAGE HEADERS
+   ============================================================ */
+
+.page-header {
+    position: relative;
+    min-height: 220px;
+    padding: 2.5rem 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ============================================================
+   VIDEO BACKGROUNDS
+   ============================================================ */
+
+.hero-video,
+.page-header-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-overlay,
+.page-header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+.hero-content,
+.page-header-content {
+    position: relative;
+    z-index: 3;
+}
+
+/* ============================================================
+   CUSTOM CONTAINER
+   ============================================================ */
+
+.container123 {
+    background-color: transparent;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ff0000;
+    border-radius: 10px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #cc0000;
+    }
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+
+@media (max-width: 992px) {
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .movie-card img {
+        height: 340px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .hero {
+        height: 400px;
+    }
+
+        .hero h1 {
+            font-size: 36px;
+        }
+
+        .hero p {
+            font-size: 16px;
+        }
+
+    .movie-card img {
+        height: 300px;
+    }
+
+    .page-header {
+        min-height: 160px;
+        padding: 2rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .hero {
+        height: 350px;
+    }
+
+        .hero h1 {
+            font-size: 30px;
+        }
+
+    .movie-card img {
+        height: 260px;
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+    }
+}
