@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CinemaX – Premium Movie Ticket Booking</title>
+    <title>All Movies – CinemaX</title>
+    <meta name="description" content="Browse CinemaX's full movie library. Filter by genre, search by title, and book your seats instantly." />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css" />
     <style>
         :root {
             --red: #e50914;
@@ -21,1677 +21,454 @@
             --text: #f2f1f8;
             --muted: #7a7992;
             --border: rgba(255,255,255,.07);
-            --head: 'Bebas Neue',sans-serif;
-            --body: 'Barlow',sans-serif;
-            --cond: 'Barlow Condensed',sans-serif;
+            --success: #22c55e;
+            --head: 'Bebas Neue', sans-serif;
+            --body: 'Barlow', sans-serif;
+            --cond: 'Barlow Condensed', sans-serif;
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text); font-family: var(--body); overflow-x: hidden; }
+        img { display: block; max-width: 100%; }
+        a { text-decoration: none; color: inherit; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--body);
-            overflow-x: hidden;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--red);
-            border-radius: 3px;
-        }
-
-        /* NAVBAR */
+        /* ── NAVBAR ── */
         .cx-nav {
-            position: sticky;
-            top: 0;
-            z-index: 900;
+            position: sticky; top: 0; z-index: 900;
             background: rgba(92,0,0,.96);
             backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(255,255,255,.08);
             padding: 10px 0;
         }
+        .cx-nav .container { display: flex; align-items: center; justify-content: space-between; }
+        .cx-brand { font-family: var(--head); font-size: 2rem; letter-spacing: 4px; display: flex; align-items: center; gap: 8px; }
+        .cx-brand i { color: var(--gold); }
+        .cx-brand .x { color: var(--red); }
+        .cx-links { display: flex; gap: 4px; list-style: none; }
+        .cx-links a { font-size: .78rem; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: rgba(255,255,255,.7); padding: 7px 14px; border-radius: 20px; transition: .2s; }
+        .cx-links a:hover, .cx-links a.active { color: #fff; background: rgba(255,255,255,.1); }
+        .btn-booknow { background: var(--red); color: #fff; border: none; padding: 9px 22px; border-radius: 22px; font-weight: 700; font-size: .78rem; letter-spacing: .5px; text-transform: uppercase; transition: .2s; cursor: pointer; font-family: var(--body); display: inline-flex; align-items: center; gap: 6px; }
+        .btn-booknow:hover { background: var(--red-dim); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229,9,20,.4); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+        .hamburger span { width: 22px; height: 2px; background: #fff; border-radius: 2px; display: block; transition: .3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .mob-drawer { display: none; position: fixed; inset: 0; z-index: 850; background: rgba(5,5,10,.97); backdrop-filter: blur(10px); flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+        .mob-drawer.open { display: flex; }
+        .mob-drawer a { font-family: var(--head); font-size: 2.4rem; letter-spacing: 4px; color: rgba(255,255,255,.85); transition: .2s; }
+        .mob-drawer a:hover { color: var(--gold); }
+        .mob-close { position: absolute; top: 22px; right: 22px; background: none; border: none; color: rgba(255,255,255,.5); font-size: 1.4rem; cursor: pointer; }
 
-            .cx-nav .container {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-        .cx-brand {
-            font-family: var(--head);
-            font-size: 2rem;
-            letter-spacing: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        /* ── PAGE HERO ── */
+        .page-hero {
+            position: relative; padding: 72px 0 56px; text-align: center; overflow: hidden;
+            background: linear-gradient(160deg, #020208 0%, #1e0000 45%, #020208 100%);
+            border-bottom: 1px solid var(--border);
         }
-
-            .cx-brand i {
-                color: var(--gold);
-            }
-
-            .cx-brand .x {
-                color: var(--red);
-            }
-
-        .cx-links {
-            display: flex;
-            gap: 4px;
-            list-style: none;
-        }
-
-            .cx-links a {
-                font-size: .78rem;
-                font-weight: 600;
-                letter-spacing: .8px;
-                text-transform: uppercase;
-                color: rgba(255,255,255,.7);
-                padding: 7px 14px;
-                border-radius: 20px;
-                transition: .2s;
-            }
-
-                .cx-links a:hover, .cx-links a.active {
-                    color: #fff;
-                    background: rgba(255,255,255,.1);
-                }
-
-        .btn-booknow {
-            background: var(--red);
-            color: #fff;
-            border: none;
-            padding: 9px 22px;
-            border-radius: 22px;
-            font-weight: 700;
-            font-size: .78rem;
-            letter-spacing: .5px;
-            text-transform: uppercase;
-            transition: .2s;
-            cursor: pointer;
-            font-family: var(--body);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-            .btn-booknow:hover {
-                background: var(--red-dim);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(229,9,20,.4);
-            }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-            .hamburger span {
-                width: 22px;
-                height: 2px;
-                background: #fff;
-                border-radius: 2px;
-                display: block;
-                transition: .3s;
-            }
-
-            .hamburger.open span:nth-child(1) {
-                transform: translateY(7px) rotate(45deg);
-            }
-
-            .hamburger.open span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .hamburger.open span:nth-child(3) {
-                transform: translateY(-7px) rotate(-45deg);
-            }
-
-        .mob-drawer {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 850;
-            background: rgba(5,5,10,.97);
-            backdrop-filter: blur(10px);
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
-        }
-
-            .mob-drawer.open {
-                display: flex;
-            }
-
-            .mob-drawer a {
-                font-family: var(--head);
-                font-size: 2.4rem;
-                letter-spacing: 4px;
-                color: rgba(255,255,255,.85);
-                transition: .2s;
-            }
-
-                .mob-drawer a:hover {
-                    color: var(--gold);
-                }
-
-        .mob-close {
-            position: absolute;
-            top: 22px;
-            right: 22px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,.5);
-            font-size: 1.4rem;
-            cursor: pointer;
-        }
-
-        /* HERO */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: linear-gradient(135deg,#020208 0%,#1c0000 45%,#020208 100%);
-        }
-
-            .hero::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                z-index: 1;
-                pointer-events: none;
-                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
-                animation: grain .8s steps(2) infinite;
-            }
-
-        @keyframes grain {
-            0%,100% {
-                transform: translate(0,0)
-            }
-
-            25% {
-                transform: translate(-2px,1px)
-            }
-
-            50% {
-                transform: translate(2px,-1px)
-            }
-
-            75% {
-                transform: translate(-1px,2px)
-            }
-        }
-
-        .hero-glow {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            background: radial-gradient(ellipse 65% 70% at 50% 60%,rgba(229,9,20,.13) 0%,transparent 70%);
-            animation: pulseGlow 5s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            from {
-                opacity: .6
-            }
-
-            to {
-                opacity: 1
-            }
-        }
-
-        .film-strip {
-            position: absolute;
-            height: 100%;
-            width: 48px;
-            background: repeating-linear-gradient(to bottom,transparent 0,transparent 26px,rgba(255,255,255,.015) 26px,rgba(255,255,255,.015) 30px);
-            z-index: 0;
-        }
-
-            .film-strip.l {
-                left: 36px;
-                animation: stripScroll 22s linear infinite;
-            }
-
-            .film-strip.r {
-                right: 36px;
-                animation: stripScroll 30s linear infinite reverse;
-            }
-
-        @keyframes stripScroll {
-            from {
-                transform: translateY(0)
-            }
-
-            to {
-                transform: translateY(-180px)
-            }
-        }
-
-        .hero-posters {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .fp {
-            position: absolute;
-            border-radius: 8px;
-            overflow: hidden;
-            opacity: .1;
-            box-shadow: 0 8px 32px rgba(0,0,0,.8);
-        }
-
-            .fp img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-        .fp1 {
-            width: 120px;
-            height: 180px;
-            left: 4%;
-            top: 14%;
-            transform: rotate(-7deg);
-            animation: fp1 9s ease-in-out infinite;
-        }
-
-        .fp2 {
-            width: 100px;
-            height: 150px;
-            left: 10%;
-            bottom: 18%;
-            transform: rotate(5deg);
-            animation: fp2 11s ease-in-out infinite;
-        }
-
-        .fp3 {
-            width: 130px;
-            height: 195px;
-            right: 5%;
-            top: 12%;
-            transform: rotate(7deg);
-            animation: fp1 10s ease-in-out infinite reverse;
-        }
-
-        .fp4 {
-            width: 105px;
-            height: 158px;
-            right: 12%;
-            bottom: 16%;
-            transform: rotate(-4deg);
-            animation: fp2 12s ease-in-out infinite reverse;
-        }
-
-        @keyframes fp1 {
-            0%,100% {
-                transform: rotate(-7deg) translateY(0)
-            }
-
-            50% {
-                transform: rotate(-7deg) translateY(-18px)
-            }
-        }
-
-        @keyframes fp2 {
-            0%,100% {
-                transform: rotate(5deg) translateY(0)
-            }
-
-            50% {
-                transform: rotate(5deg) translateY(-12px)
-            }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 860px;
-            padding: 0 24px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(245,197,24,.35);
-            background: rgba(245,197,24,.06);
-            color: var(--gold);
-            padding: 5px 18px;
-            border-radius: 20px;
-            font-size: .7rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-            animation: fadeUp .8s ease both;
-        }
-
-        .hero h1 {
-            font-family: var(--head);
-            font-size: clamp(3.5rem,10vw,8rem);
-            line-height: .92;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            animation: fadeUp .8s ease .15s both;
-        }
-
-            .hero h1 .outline {
-                -webkit-text-stroke: 2px rgba(255,255,255,.22);
-                color: transparent;
-            }
-
-            .hero h1 .red {
-                color: var(--red);
-            }
-
-        .hero-sub {
-            font-size: 1.05rem;
-            font-weight: 300;
-            font-style: italic;
-            color: rgba(242,241,248,.62);
-            line-height: 1.75;
-            max-width: 540px;
-            margin: 0 auto 36px;
-            animation: fadeUp .8s ease .3s both;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 14px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeUp .8s ease .45s both;
-        }
-
-        .btn-hero {
-            background: var(--red);
-            color: #fff;
-            border: none;
-            padding: 14px 34px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: .95rem;
-            letter-spacing: .5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            transition: .25s;
-            cursor: pointer;
-            font-family: var(--body);
-        }
-
-            .btn-hero:hover {
-                background: var(--red-dim);
-                transform: translateY(-3px);
-                box-shadow: 0 14px 34px rgba(229,9,20,.45);
-            }
-
-        .btn-hero-outline {
-            background: transparent;
-            color: rgba(255,255,255,.85);
-            border: 1.5px solid rgba(255,255,255,.22);
-            padding: 13px 30px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: .95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            transition: .25s;
-            cursor: pointer;
-            font-family: var(--body);
-        }
-
-            .btn-hero-outline:hover {
-                border-color: rgba(255,255,255,.55);
-                background: rgba(255,255,255,.07);
-                transform: translateY(-3px);
-            }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 34px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255,255,255,.3);
-            font-size: .62rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            animation: fadeUp 1s ease 1s both;
-        }
-
-        .scroll-line {
-            width: 1px;
-            height: 46px;
-            background: linear-gradient(to bottom,rgba(229,9,20,.8),transparent);
-            animation: scrollAnim 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollAnim {
-            0%,100% {
-                transform: scaleY(0);
-                transform-origin: top
-            }
-
-            50% {
-                transform: scaleY(1);
-                transform-origin: top
-            }
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(26px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        /* STATS BAR */
-        .stats-bar {
-            background: var(--maroon);
-            border-bottom: 1px solid rgba(255,255,255,.08);
-        }
-
-        .stats-inner {
-            display: flex;
-        }
-
-        .stat-item {
-            flex: 1;
-            text-align: center;
-            padding: 18px 10px;
-            border-right: 1px solid rgba(255,255,255,.08);
-        }
-
-            .stat-item:last-child {
-                border-right: none;
-            }
-
-        .stat-num {
-            font-family: var(--head);
-            font-size: 2rem;
-            color: var(--gold);
-            letter-spacing: 2px;
-            line-height: 1;
-        }
-
-        .stat-lbl {
-            font-size: .66rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,.45);
-            margin-top: 4px;
-        }
-
-        /* SECTIONS */
-        .sec {
-            padding: 80px 0;
-        }
-
-        .sec-alt {
+        .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 65% 65% at 50% 100%, rgba(229,9,20,.13), transparent 65%); }
+        .page-hero::after { content: 'MOVIES'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: var(--head); font-size: clamp(6rem,18vw,14rem); letter-spacing: 10px; color: rgba(255,255,255,.022); pointer-events: none; white-space: nowrap; }
+        .page-hero .container { position: relative; z-index: 1; }
+        .ph-tag { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(245,197,24,.3); padding: 4px 16px; border-radius: 20px; margin-bottom: 12px; }
+        .ph-title { font-family: var(--head); font-size: clamp(3rem,7vw,5.5rem); letter-spacing: 5px; line-height: .95; margin-bottom: 10px; }
+        .ph-title span { color: var(--red); }
+        .ph-sub { color: var(--muted); font-size: .92rem; font-style: italic; font-weight: 300; }
+        .breadcrumb { justify-content: center; background: transparent; margin: 14px 0 0; }
+        .breadcrumb-item a { color: var(--muted); font-size: .8rem; }
+        .breadcrumb-item.active { color: var(--gold); font-size: .8rem; }
+        .breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,.2); }
+
+        /* ── TOOLBAR ── */
+        .toolbar {
             background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+            position: sticky; top: 68px; z-index: 700;
         }
-
-        .sec-dark {
-            background: var(--bg3);
-        }
-
-        .sec-tag {
-            display: inline-block;
-            font-size: .67rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--gold);
-            border: 1px solid rgba(245,197,24,.3);
-            padding: 4px 16px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
-
-        .sec-title {
-            font-family: var(--head);
-            font-size: clamp(2rem,4.5vw,3.2rem);
-            letter-spacing: 3px;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
-            .sec-title .red {
-                color: var(--red);
-            }
-
-        .sec-sub {
-            color: var(--muted);
-            font-size: .88rem;
-            line-height: 1.7;
-        }
-
-        .sec-line {
-            width: 56px;
-            height: 3px;
-            background: linear-gradient(90deg,var(--red),var(--gold));
-            border-radius: 2px;
-            margin: 14px auto 0;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity .65s ease,transform .65s ease;
-        }
-
-            .reveal.in {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        .d1 {
-            transition-delay: .1s;
-        }
-
-        .d2 {
-            transition-delay: .2s;
-        }
-
-        .d3 {
-            transition-delay: .3s;
-        }
-
-        .d4 {
-            transition-delay: .4s;
-        }
-
-        /* NOW SHOWING HEADER */
-        .now-header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            margin-bottom: 36px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .btn-see-all {
-            background: transparent;
-            border: 1px solid rgba(229,9,20,.4);
-            color: var(--red);
-            padding: 9px 22px;
-            border-radius: 20px;
-            font-size: .78rem;
-            font-weight: 700;
-            letter-spacing: .5px;
-            text-transform: uppercase;
-            transition: .2s;
-            cursor: pointer;
-            font-family: var(--body);
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-            .btn-see-all:hover {
-                background: rgba(229,9,20,.1);
-                border-color: var(--red);
-            }
-
-        /* MOVIE GRID */
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-            gap: 22px;
-        }
-
-        .mc {
-            background: var(--card);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform .3s ease,box-shadow .3s ease,border-color .3s ease;
-            cursor: pointer;
-        }
-
-            .mc:hover {
-                transform: translateY(-10px) scale(1.02);
-                border-color: rgba(229,9,20,.45);
-                box-shadow: 0 24px 56px rgba(0,0,0,.7),0 0 0 1px rgba(229,9,20,.12);
-            }
-
-                .mc:hover .mc-img img {
-                    transform: scale(1.08);
-                }
-
-                .mc:hover .mc-overlay {
-                    opacity: 1;
-                }
-
-        .mc-img {
-            position: relative;
-            aspect-ratio: 2/3;
-            overflow: hidden;
-            background: #0a0a12;
-            flex-shrink: 0;
-        }
-
-            .mc-img img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform .5s ease;
-            }
-
-        .mc-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 2;
-            font-family: var(--cond);
-            font-size: .62rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 3px 10px;
-            border-radius: 6px;
-            background: var(--red);
-            color: #fff;
-        }
-
-            .mc-badge.vip {
-                background: var(--gold);
-                color: #000;
-                top: 36px;
-            }
-
-        .mc-rating {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 2;
-            background: rgba(0,0,0,.75);
-            backdrop-filter: blur(4px);
-            padding: 3px 9px;
-            border-radius: 7px;
-            font-size: .7rem;
-            font-weight: 700;
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .mc-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 3;
-            background: linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.35) 55%,transparent 100%);
-            opacity: 0;
-            transition: opacity .3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 14px;
-        }
-
-        .ov-desc {
-            font-size: .7rem;
-            color: rgba(255,255,255,.72);
-            line-height: 1.55;
-            margin-bottom: 10px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .ov-btns {
-            display: flex;
-            gap: 7px;
-        }
-
-        .ov-book {
-            flex: 1;
-            background: var(--red);
-            color: #fff;
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: .75rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-            font-family: var(--body);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-            .ov-book:hover {
-                background: var(--red-dim);
-            }
-
-        .ov-more {
-            background: rgba(255,255,255,.13);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,.2);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: .75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .2s;
-            font-family: var(--body);
-        }
-
-            .ov-more:hover {
-                background: rgba(255,255,255,.22);
-            }
-
-        .mc-body {
-            padding: 13px 13px 8px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mc-title {
-            font-family: var(--cond);
-            font-size: .95rem;
-            font-weight: 700;
-            margin-bottom: 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mc-genre {
-            font-size: .67rem;
-            color: var(--muted);
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mc-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: .7rem;
-            color: var(--muted);
-            margin-top: auto;
-        }
-
-            .mc-meta .dot {
-                width: 3px;
-                height: 3px;
-                background: var(--muted);
-                border-radius: 50%;
-            }
-
-        .mc-footer {
-            padding: 10px 13px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mc-price {
-            font-family: var(--cond);
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: var(--red);
-        }
-
-        .mc-book {
-            background: var(--red);
-            color: #fff;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-size: .73rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-            font-family: var(--body);
-        }
-
-            .mc-book:hover {
-                background: var(--red-dim);
-            }
-
-        /* PROMO STRIP */
-        .promo-strip {
-            background: linear-gradient(135deg,#100000 0%,#2c0000 50%,#100000 100%);
-            border-top: 1px solid rgba(229,9,20,.2);
-            border-bottom: 1px solid rgba(229,9,20,.2);
-            padding: 72px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-            .promo-strip::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: radial-gradient(ellipse 45% 80% at 15% 50%,rgba(229,9,20,.13) 0%,transparent 60%);
-            }
-
-        .promo-inner {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .promo-text h2 {
-            font-family: var(--head);
-            font-size: clamp(2.2rem,5vw,3.8rem);
-            letter-spacing: 3px;
-            line-height: 1;
-            margin-bottom: 14px;
-        }
-
-            .promo-text h2 span {
-                color: var(--red);
-            }
-
-        .promo-text p {
-            color: rgba(255,255,255,.58);
-            font-size: .93rem;
-            line-height: 1.8;
-            margin-bottom: 26px;
-            font-weight: 300;
-        }
-
-        .promo-posters {
-            display: flex;
-            gap: 14px;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .pp {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,.85);
-            flex-shrink: 0;
-        }
-
-            .pp:nth-child(1) {
-                width: 120px;
-                height: 180px;
-                transform: rotate(-5deg);
-            }
-
-            .pp:nth-child(2) {
-                width: 145px;
-                height: 218px;
-                transform: rotate(2deg);
-                margin-top: -20px;
-            }
-
-            .pp:nth-child(3) {
-                width: 120px;
-                height: 180px;
-                transform: rotate(-3deg);
-            }
-
-            .pp img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-        /* FEATURES */
-        .feat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-            gap: 20px;
-        }
-
-        .feat-card {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px 22px;
-            text-align: center;
-            transition: border-color .3s,transform .3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-            .feat-card::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: radial-gradient(ellipse 80% 60% at 50% 0%,rgba(229,9,20,.04),transparent 60%);
-                opacity: 0;
-                transition: .3s;
-            }
-
-            .feat-card:hover {
-                border-color: rgba(229,9,20,.35);
-                transform: translateY(-5px);
-            }
-
-                .feat-card:hover::before {
-                    opacity: 1;
-                }
-
-        .feat-icon {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            background: rgba(229,9,20,.1);
-            border: 1px solid rgba(229,9,20,.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 1.35rem;
-            color: var(--red);
-            transition: .3s;
-        }
-
-        .feat-card:hover .feat-icon {
-            background: rgba(229,9,20,.2);
-            border-color: rgba(229,9,20,.4);
-        }
-
-        .feat-card h4 {
-            font-family: var(--head);
-            font-size: 1.3rem;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-        }
-
-        .feat-card p {
-            color: var(--muted);
-            font-size: .84rem;
-            line-height: 1.7;
-        }
-
-        /* CTA */
-        .cta-sec {
-            background: linear-gradient(135deg,var(--maroon) 0%,#3a0000 50%,var(--maroon) 100%);
-            padding: 80px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border-top: 1px solid rgba(229,9,20,.2);
-        }
-
-            .cta-sec::before {
-                content: 'CINEMAX';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
-                font-family: var(--head);
-                font-size: clamp(8rem,18vw,15rem);
-                letter-spacing: 10px;
-                color: rgba(255,255,255,.022);
-                pointer-events: none;
-                white-space: nowrap;
-            }
-
-            .cta-sec h2 {
-                font-family: var(--head);
-                font-size: clamp(2.2rem,5.5vw,4rem);
-                letter-spacing: 3px;
-                margin-bottom: 10px;
-            }
-
-                .cta-sec h2 span {
-                    color: var(--gold);
-                }
-
-            .cta-sec p {
-                color: rgba(255,255,255,.55);
-                font-size: .93rem;
-                margin-bottom: 30px;
-            }
-
-        /* FOOTER */
-        .cx-footer {
-            background: #000;
-            border-top: 1px solid var(--border);
-            padding: 56px 0 22px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 36px;
-            margin-bottom: 44px;
-        }
-
-        .footer-brand {
-            font-family: var(--head);
-            font-size: 1.8rem;
-            letter-spacing: 3px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-            .footer-brand i {
-                color: var(--gold);
-            }
-
-            .footer-brand .x {
-                color: var(--red);
-            }
-
-        .footer-desc {
-            color: var(--muted);
-            font-size: .83rem;
-            line-height: 1.75;
-            margin-bottom: 18px;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 9px;
-        }
-
-            .footer-socials a {
-                background: var(--bg3);
-                border: 1px solid var(--border);
-                color: var(--muted);
-                width: 38px;
-                height: 38px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: .88rem;
-                transition: .2s;
-            }
-
-                .footer-socials a:hover {
-                    background: var(--red);
-                    border-color: var(--red);
-                    color: #fff;
-                }
-
-        .footer-col h5 {
-            font-family: var(--head);
-            font-size: 1rem;
-            letter-spacing: 1.5px;
-            color: var(--gold);
-            margin-bottom: 14px;
-            text-transform: uppercase;
-        }
-
-        .footer-col a {
-            display: block;
-            color: var(--muted);
-            font-size: .83rem;
-            margin-bottom: 9px;
-            transition: .2s;
-        }
-
-            .footer-col a:hover {
-                color: #fff;
-                padding-left: 4px;
-            }
-
-        .footer-bottom {
-            border-top: 1px solid var(--border);
-            padding-top: 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-            .footer-bottom p {
-                color: var(--muted);
-                font-size: .77rem;
-            }
-
-            .footer-bottom span {
-                color: var(--gold);
-            }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 500;
-            background: var(--red);
-            color: #fff;
-            border: none;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            font-size: .95rem;
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-            transition: .3s;
-            box-shadow: 0 4px 18px rgba(229,9,20,.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-            .back-to-top.show {
-                opacity: 1;
-                pointer-events: all;
-            }
-
-            .back-to-top:hover {
-                transform: translateY(-3px);
-            }
-
-        @media(max-width:1024px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .promo-inner {
-                grid-template-columns: 1fr;
-            }
-
-            .promo-posters {
-                justify-content: center;
-            }
-        }
-
+        .toolbar-inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 380px; }
+        .search-wrap i { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: .85rem; pointer-events: none; }
+        .search-input { width: 100%; background: rgba(255,255,255,.06); border: 1px solid var(--border); color: var(--text); padding: 10px 14px 10px 36px; border-radius: 10px; font-family: var(--body); font-size: .87rem; outline: none; transition: .2s; }
+        .search-input:focus { border-color: rgba(229,9,20,.5); background: rgba(255,255,255,.09); }
+        .search-input::placeholder { color: var(--muted); }
+        .genre-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+        .gtab { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 6px 14px; border-radius: 16px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; transition: .2s; font-family: var(--body); white-space: nowrap; }
+        .gtab:hover, .gtab.active { background: var(--red); border-color: var(--red); color: #fff; }
+        .sort-select { background: rgba(255,255,255,.06); border: 1px solid var(--border); color: var(--text); padding: 9px 14px; border-radius: 10px; font-family: var(--body); font-size: .82rem; outline: none; cursor: pointer; appearance: none; min-width: 160px; }
+        .sort-select option { background: var(--bg2); }
+        .results-count { font-size: .78rem; color: var(--muted); white-space: nowrap; font-weight: 600; letter-spacing: .5px; }
+        .results-count span { color: var(--gold); }
+
+        /* ── MOVIE GRID ── */
+        .main-sec { padding: 44px 0 80px; }
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 22px; }
+        .mc { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; cursor: pointer; }
+        .mc:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(229,9,20,.45); box-shadow: 0 24px 56px rgba(0,0,0,.7), 0 0 0 1px rgba(229,9,20,.12); }
+        .mc:hover .mc-img img { transform: scale(1.08); }
+        .mc:hover .mc-overlay { opacity: 1; }
+        .mc-img { position: relative; aspect-ratio: 2/3; overflow: hidden; background: #0a0a12; flex-shrink: 0; }
+        .mc-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+        .mc-badge { position: absolute; top: 10px; left: 10px; z-index: 2; font-family: var(--cond); font-size: .62rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--red); color: #fff; }
+        .mc-badge.vip { background: var(--gold); color: #000; top: 36px; }
+        .mc-rating { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); padding: 3px 9px; border-radius: 7px; font-size: .7rem; font-weight: 700; color: var(--gold); display: flex; align-items: center; gap: 3px; }
+        .mc-overlay { position: absolute; inset: 0; z-index: 3; background: linear-gradient(to top, rgba(0,0,0,.95) 0%, rgba(0,0,0,.35) 55%, transparent 100%); opacity: 0; transition: opacity .3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; }
+        .ov-desc { font-size: .7rem; color: rgba(255,255,255,.72); line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .ov-btns { display: flex; gap: 7px; }
+        .ov-book { flex: 1; background: var(--red); color: #fff; border: none; padding: 8px; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; transition: .2s; font-family: var(--body); display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .ov-book:hover { background: var(--red-dim); }
+        .mc-body { padding: 13px 13px 8px; flex: 1; display: flex; flex-direction: column; }
+        .mc-title { font-family: var(--cond); font-size: .95rem; font-weight: 700; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mc-genre { font-size: .67rem; color: var(--muted); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mc-meta { display: flex; align-items: center; gap: 8px; font-size: .7rem; color: var(--muted); margin-top: auto; }
+        .mc-meta .dot { width: 3px; height: 3px; background: var(--muted); border-radius: 50%; }
+        .mc-footer { padding: 10px 13px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .mc-price { font-family: var(--cond); font-size: 1.05rem; font-weight: 800; color: var(--red); }
+        .mc-book { background: var(--red); color: #fff; border: none; padding: 6px 16px; border-radius: 8px; font-size: .73rem; font-weight: 700; cursor: pointer; transition: .2s; font-family: var(--body); }
+        .mc-book:hover { background: var(--red-dim); }
+
+        /* empty state */
+        .empty-state { text-align: center; padding: 80px 20px; grid-column: 1 / -1; }
+        .empty-state i { font-size: 3rem; color: var(--muted); margin-bottom: 16px; opacity: .4; }
+        .empty-state h3 { font-family: var(--head); font-size: 1.8rem; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; }
+        .empty-state p { font-size: .88rem; color: var(--muted); }
+
+        /* reveal */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+
+        /* ── CTA ── */
+        .cta-strip { background: linear-gradient(135deg, var(--maroon) 0%, #3a0000 50%, var(--maroon) 100%); padding: 70px 0; text-align: center; border-top: 1px solid rgba(229,9,20,.2); }
+        .cta-strip h2 { font-family: var(--head); font-size: clamp(2rem,5vw,3.5rem); letter-spacing: 3px; margin-bottom: 10px; }
+        .cta-strip h2 span { color: var(--gold); }
+        .cta-strip p { color: rgba(255,255,255,.55); font-size: .93rem; margin-bottom: 28px; }
+        .btn-cta { background: var(--red); color: #fff; border: none; padding: 14px 36px; border-radius: 30px; font-weight: 700; font-size: .95rem; display: inline-flex; align-items: center; gap: 9px; transition: .25s; cursor: pointer; font-family: var(--body); }
+        .btn-cta:hover { background: var(--red-dim); transform: translateY(-3px); box-shadow: 0 14px 34px rgba(229,9,20,.45); }
+
+        /* ── FOOTER ── */
+        .cx-footer { background: #000; border-top: 1px solid var(--border); padding: 56px 0 22px; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 36px; margin-bottom: 44px; }
+        .footer-brand { font-family: var(--head); font-size: 1.8rem; letter-spacing: 3px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .footer-brand i { color: var(--gold); }
+        .footer-brand .x { color: var(--red); }
+        .footer-desc { color: var(--muted); font-size: .83rem; line-height: 1.75; margin-bottom: 18px; }
+        .footer-socials { display: flex; gap: 9px; }
+        .footer-socials a { background: var(--bg3); border: 1px solid var(--border); color: var(--muted); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .88rem; transition: .2s; }
+        .footer-socials a:hover { background: var(--red); border-color: var(--red); color: #fff; }
+        .footer-col h5 { font-family: var(--head); font-size: 1rem; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 14px; text-transform: uppercase; }
+        .footer-col a { display: block; color: var(--muted); font-size: .83rem; margin-bottom: 9px; transition: .2s; }
+        .footer-col a:hover { color: #fff; padding-left: 4px; }
+        .footer-bottom { border-top: 1px solid var(--border); padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .footer-bottom p { color: var(--muted); font-size: .77rem; }
+        .footer-bottom span { color: var(--gold); }
+        .back-to-top { position: fixed; bottom: 28px; right: 28px; z-index: 500; background: var(--red); color: #fff; border: none; width: 46px; height: 46px; border-radius: 50%; font-size: .95rem; cursor: pointer; opacity: 0; pointer-events: none; transition: .3s; box-shadow: 0 4px 18px rgba(229,9,20,.4); display: flex; align-items: center; justify-content: center; }
+        .back-to-top.show { opacity: 1; pointer-events: all; }
+        .back-to-top:hover { transform: translateY(-3px); }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
         @media(max-width:768px) {
-            .cx-links, .btn-booknow {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .movie-grid {
-                grid-template-columns: repeat(auto-fill,minmax(155px,1fr));
-                gap: 14px;
-            }
-
-            .feat-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .stats-inner {
-                flex-wrap: wrap;
-            }
-
-            .stat-item {
-                min-width: 50%;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,.08);
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
+            .cx-links, .btn-booknow { display: none; }
+            .hamburger { display: flex; }
+            .toolbar-inner { flex-direction: column; align-items: stretch; }
+            .search-wrap { max-width: 100%; }
+            .movie-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 14px; }
+            .footer-grid { grid-template-columns: 1fr; }
         }
-
-        @media(max-width:480px) {
-            .movie-grid {
-                grid-template-columns: repeat(2,1fr);
-            }
-
-            .feat-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media(max-width:480px) { .movie-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
 
-    <nav class="cx-nav">
-        <div class="container">
-            <a href="index.html" class="cx-brand"><i class="fa-solid fa-film"></i>CINEMA<span class="x">X</span></a>
-            <ul class="cx-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="qualifications.html">Qualifications</a></li>
-                <li><a href="service.html">Services</a></li>
-                <li><a href="booking.html">Booking</a></li>
-                <li><a href="listedMovies.html">All Movies</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <a href="booking.html" class="btn-booknow"><i class="fa-solid fa-ticket"></i> Book Now</a>
-            <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
-        </div>
-    </nav>
-
-    <div class="mob-drawer" id="drawer">
-        <button class="mob-close" id="drawClose"><i class="fa-solid fa-xmark"></i></button>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="qualifications.html">Qualifications</a>
-        <a href="services.html">Services</a>
-        <a href="booking.html">Booking</a>
-        <a href="listedMovies.html">All Movies</a>
-        <a href="contact.html">Contact</a>
+<!-- ── NAVBAR ── -->
+<nav class="cx-nav">
+    <div class="container">
+        <a href="index.html" class="cx-brand"><i class="fa-solid fa-film"></i>CINEMA<span class="x">X</span></a>
+        <ul class="cx-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="qualifications.html">Qualifications</a></li>
+            <li><a href="service.html">Services</a></li>
+            <li><a href="booking.html">Booking</a></li>
+            <li><a href="listedMovies.html" class="active">All Movies</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <a href="booking.html" class="btn-booknow"><i class="fa-solid fa-ticket"></i> Book Now</a>
+        <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
     </div>
+</nav>
+<div class="mob-drawer" id="drawer">
+    <button class="mob-close" id="drawClose"><i class="fa-solid fa-xmark"></i></button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="qualifications.html">Qualifications</a>
+    <a href="service.html">Services</a>
+    <a href="booking.html">Booking</a>
+    <a href="listedMovies.html">All Movies</a>
+    <a href="contact.html">Contact</a>
+</div>
 
-    <section class="hero">
-        <div class="hero-glow"></div>
-        <div class="film-strip l"></div>
-        <div class="film-strip r"></div>
-        <div class="hero-posters">
-            <div class="fp fp1"><!-- IMAGE: images/dune_2-picture.png --><img src="images/dune 2-picture.png" /> alt=""></div>
-            <div class="fp fp2"><!-- IMAGE: images/demon_slayer.png --><img src="images/demon slayer.png" /> alt=""></div>
-            <div class="fp fp3"><!-- IMAGE: images/JohnWick4.jpg --><img src="images/JohnWick4.jpg" alt=""></div>
-            <div class="fp fp4"><!-- IMAGE: images/The_GodFather.png --> <img src="images/The GodFather.png" />alt=""></div>
-
-        </div>
-        <div class="hero-content">
-            <div class="hero-badge"><i class="fa-solid fa-film"></i> Premium Cinema · Gqeberha, Eastern Cape</div>
-            <h1>WELCOME TO<br>CINEMA<span class="red">X</span><br><span class="outline">WHERE FILM LIVES</span></h1>
-            <p class="hero-sub">Book VIP &amp; standard seats for the latest blockbusters — instantly and easily. No queues, no stress.</p>
-            <div class="hero-btns">
-                <a href="#movies" class="btn-hero"><i class="fa-solid fa-ticket"></i> Explore Movies</a>
-                <a href="listedMovies.html" class="btn-hero-outline"><i class="fa-solid fa-grid"></i> Full Library</a>
-            </div>
-        </div>
-        <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
-    </section>
-
-    <div class="stats-bar">
-        <div class="container">
-            <div class="stats-inner">
-                <div class="stat-item"><div class="stat-num" id="cnt1">0</div><div class="stat-lbl">Movies</div></div>
-                <div class="stat-item"><div class="stat-num">8+</div><div class="stat-lbl">Genres</div></div>
-                <div class="stat-item"><div class="stat-num">6</div><div class="stat-lbl">Daily Showtimes</div></div>
-                <div class="stat-item"><div class="stat-num">R90</div><div class="stat-lbl">Tickets From</div></div>
-                <div class="stat-item"><div class="stat-num" id="cnt2">0</div><div class="stat-lbl">Happy Guests</div></div>
-            </div>
-        </div>
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <div class="container">
+        <div class="ph-tag"><i class="fa-solid fa-film"></i> Full Library</div>
+        <h1 class="ph-title">ALL <span>MOVIES</span></h1>
+        <p class="ph-sub">39+ titles across 12 genres — find your film and book your seat instantly.</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active">All Movies</li>
+            </ol>
+        </nav>
     </div>
+</div>
 
-    <section id="movies" class="sec">
-        <div class="container">
-            <div class="now-header">
-                <div class="reveal">
-                    <div class="sec-tag">Now Showing</div>
-                    <h2 class="sec-title">FEATURED <span class="red">MOVIES</span></h2>
-                    <p class="sec-sub">Hover any card to preview — click Book to secure your seat.</p>
-                </div>
-                <a href="listedMovies.html" class="btn-see-all reveal">View All Movies <i class="fa-solid fa-arrow-right"></i></a>
+<!-- ── TOOLBAR ── -->
+<div class="toolbar">
+    <div class="container">
+        <div class="toolbar-inner">
+            <div class="search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search movies, genres…" oninput="renderMovies()">
             </div>
-            <div class="movie-grid">
-
-                <div class="mc reveal">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/dune_2-picture.png -->
-
-                        <img src="images/dune 2-picture.png" /> alt="Dune: Part Two">
-                        <span class="mc-badge">NEW</span>
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 8.7</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">Dune: Part Two</div>
-                        <div class="mc-genre">Sci-Fi · Action · Adventure</div>
-                        <div class="mc-meta"><span>2h 46m</span><span class="dot"></span><span style="color:var(--gold)">★ 8.7</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal d1">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/Interstellar.png -->
-                        <img src="images/Interstellar.png" alt="Interstellar">
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 9.0</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">In a dystopian future, a team of astronauts embark on a mission through a wormhole to find a new home for humanity.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">Interstellar</div>
-                        <div class="mc-genre">Drama · Adventure · Sci-Fi</div>
-                        <div class="mc-meta"><span>2h 49m</span><span class="dot"></span><span style="color:var(--gold)">★ 9.0</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal d2">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/The_GodFather.png -->
-                        <img src="images/The GodFather.png" /> alt="The Godfather">
-                        <span class="mc-badge vip">VIP</span>
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 9.2</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">The aging patriarch of an organized crime dynasty transfers control of his empire to his reluctant son.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">The Godfather</div>
-                        <div class="mc-genre">Crime · Drama</div>
-                        <div class="mc-meta"><span>2h 55m</span><span class="dot"></span><span style="color:var(--gold)">★ 9.2</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal d3">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/JohnWick4.jpg -->
-                        <img src="images/JohnWick4.jpg" alt="John Wick 4">
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 7.6</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">Legendary hit man John Wick takes his fight against the High Table global — from New York to Paris to Berlin.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">John Wick: Chapter 4</div>
-                        <div class="mc-genre">Action · Crime · Thriller</div>
-                        <div class="mc-meta"><span>2h 49m</span><span class="dot"></span><span style="color:var(--gold)">★ 7.6</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/Mission_Impossible.png -->
-                        <img src="images/Mission Impossible.png" alt="Mission: Impossible">
-                        <span class="mc-badge">NEW</span>
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 7.1</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">Hunt and the IMF pursue a dangerous AI called the Entity that has infiltrated global intelligence networks.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">Mission: Impossible – Final Reckoning</div>
-                        <div class="mc-genre">Action · Adventure · Thriller</div>
-                        <div class="mc-meta"><span>2h 49m</span><span class="dot"></span><span style="color:var(--gold)">★ 7.1</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal d1">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/Solo_Leveling.png -->
-                        <img src="images/Solo Leveling.png" />  alt="Solo Leveling">
-                        <span class="mc-badge">NEW</span>
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 7.6</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">A weak hunter is chosen by a mysterious System giving him the rare ability to level up beyond any known limits.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">Solo Leveling</div>
-                        <div class="mc-genre">Anime · Action · Fantasy</div>
-                        <div class="mc-meta"><span>2h 49m</span><span class="dot"></span><span style="color:var(--gold)">★ 7.6</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal d2">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/demon_slayer.png -->
-                        <img src="images/demon slayer.png" /> alt="Demon Slayer">
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 8.6</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">Tanjiro sets out to become a demon slayer to avenge his family and cure his sister Nezuko.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">Demon Slayer: Kimetsu no Yaiba</div>
-                        <div class="mc-genre">Anime · Action · Adventure</div>
-                        <div class="mc-meta"><span>2h 55m</span><span class="dot"></span><span style="color:var(--gold)">★ 8.6</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-                <div class="mc reveal d3">
-                    <div class="mc-img">
-                        <!-- IMAGE: images/The_Hangover.png -->
-                        <img src="images/The Hangover.png" /> alt="The Hangover">
-                        <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> 7.8</span>
-                        <div class="mc-overlay">
-                            <div class="ov-desc">Three buddies wake up from a bachelor party in Las Vegas with no memory of the previous night.</div>
-                            <div class="ov-btns">
-                                <button class="ov-book" onclick="window.location='booking.html'"><i class="fa-solid fa-ticket"></i> Book</button>
-                                <button class="ov-more" onclick="window.location='listedMovies.html'">More</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mc-body">
-                        <div class="mc-title">The Hangover</div>
-                        <div class="mc-genre">Comedy · Action</div>
-                        <div class="mc-meta"><span>1h 40m</span><span class="dot"></span><span style="color:var(--gold)">★ 7.8</span></div>
-                    </div>
-                    <div class="mc-footer"><span class="mc-price">R90</span><button class="mc-book" onclick="window.location='booking.html'">Book</button></div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <div class="promo-strip">
-        <div class="container">
-            <div class="promo-inner">
-                <div class="promo-text reveal">
-                    <div class="sec-tag">Full Library</div>
-                    <h2>39+ MOVIES ACROSS <span>12 GENRES</span></h2>
-                    <p>Ready to watch? View our full schedule — Action, Anime, Horror, Romance, War and more — and secure your seats before they sell out.</p>
-                    <a href="listedMovies.html" class="btn-hero"><i class="fa-solid fa-film"></i> Go to All Movies</a>
-                </div>
-                <div class="promo-posters reveal d2">
-                    <div class="pp"><!-- IMAGE: images/Interstellar.png --><img src="images/Interstellar.png" alt=""></div>
-                    <div class="pp"><!-- IMAGE: images/Solo_Leveling.png -->  <img src="images/Solo Leveling.png" /> alt=""></div>
-
-                    <div class="pp"><!-- IMAGE: images/demon_slayer.png --><img src="images/demon slayer.png" /> alt=""></div>
-
-                </div>
-            </div>
+            <div class="genre-tabs" id="genreTabs"></div>
+            <select class="sort-select" id="sortSelect" onchange="renderMovies()">
+                <option value="default">Sort: Default</option>
+                <option value="rating-desc">Rating: High → Low</option>
+                <option value="rating-asc">Rating: Low → High</option>
+                <option value="alpha">A → Z</option>
+                <option value="alpha-desc">Z → A</option>
+            </select>
+            <div class="results-count"><span id="countDisplay">39</span> movies</div>
         </div>
     </div>
+</div>
 
-    <section class="sec sec-alt">
-        <div class="container">
-            <div class="text-center mb-5 reveal">
-                <div class="sec-tag">Why CinemaX</div>
-                <h2 class="sec-title">THE FULL <span class="red">EXPERIENCE</span></h2>
-                <div class="sec-line"></div>
-            </div>
-            <div class="feat-grid">
-                <div class="feat-card reveal"><div class="feat-icon"><i class="fa-solid fa-couch"></i></div><h4>Premium Seating</h4><p>Standard &amp; VIP recliners with extra legroom — every seat has the best view.</p></div>
-                <div class="feat-card reveal d1"><div class="feat-icon"><i class="fa-solid fa-bolt"></i></div><h4>Instant Booking</h4><p>Pick your movie, choose your seats, pay and get confirmation in under 60 seconds.</p></div>
-                <div class="feat-card reveal d2"><div class="feat-icon"><i class="fa-solid fa-envelope-open-text"></i></div><h4>Email Confirmation</h4><p>Your booking reference is sent directly to your inbox the moment you confirm.</p></div>
-                <div class="feat-card reveal d3"><div class="feat-icon"><i class="fa-solid fa-shield-halved"></i></div><h4>Secure Payments</h4><p>All card payments processed securely in ZAR — no hidden fees, no surprises.</p></div>
-            </div>
+<!-- ── MOVIE GRID ── -->
+<section class="main-sec">
+    <div class="container">
+        <div class="movie-grid" id="movieGrid"></div>
+    </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-strip">
+    <div class="container" style="position:relative;z-index:1;">
+        <div class="reveal">
+            <h2>READY TO <span>BOOK?</span></h2>
+            <p>Pick your movie above, then secure your seat in under 60 seconds.</p>
+            <a href="booking.html" class="btn-cta"><i class="fa-solid fa-ticket"></i> Go to Booking</a>
         </div>
-    </section>
+    </div>
+</div>
 
-    <section class="cta-sec">
-        <div class="container" style="position:relative;z-index:1;">
-            <div class="reveal">
-                <div class="sec-tag" style="margin-bottom:16px">Ready?</div>
-                <h2>BOOK YOUR <span>SEAT</span> TODAY</h2>
-                <p>View our full schedule and secure your spot before it sells out.</p>
-                <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-                    <a href="listedMovies.html" class="btn-hero"><i class="fa-solid fa-film"></i> View All Movies</a>
-                    <a href="booking.html" class="btn-hero-outline"><i class="fa-solid fa-ticket"></i> Book Now</a>
+<!-- ── FOOTER ── -->
+<footer class="cx-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand"><i class="fa-solid fa-film"></i> CINEMA<span class="x">X</span></div>
+                <p class="footer-desc">Premium movie booking by Moroana Machoene Karel.<br>Gqeberha, Eastern Cape, South Africa.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/profile.php?id=61589396835528&sk=about" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/cinemax_sa/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.youtube.com/channel/UCWCBcH_dklfAXQwxtlm7mUw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
                 </div>
             </div>
+            <div class="footer-col">
+                <h5>Navigate</h5>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="qualifications.html">Qualifications</a>
+                <a href="service.html">Services</a>
+                <a href="booking.html">Booking</a>
+                <a href="listedMovies.html">All Movies</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h5>Genres</h5>
+                <a href="listedMovies.html">Action</a>
+                <a href="listedMovies.html">Sci-Fi</a>
+                <a href="listedMovies.html">Anime</a>
+                <a href="listedMovies.html">Drama</a>
+                <a href="listedMovies.html">Comedy</a>
+                <a href="listedMovies.html">Horror</a>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <a href="mailto:moroanakarell609@gmail.com"><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:7px"></i>moroanakarell609@gmail.com</a>
+                <a href="tel:+27796617031"><i class="fa-solid fa-phone" style="color:var(--gold);margin-right:7px"></i>+27 79 661 7031</a>
+                <a href="contact.html"><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:7px"></i>Gqeberha, Eastern Cape</a>
+            </div>
         </div>
-    </section>
+        <div class="footer-bottom">
+            <p>© 2026 CinemaX | Built by <span>Moroana Machoene Karel</span></p>
+            <p>Made with <i class="fa-solid fa-heart" style="color:var(--red)"></i> for ITP2020</p>
+        </div>
+    </div>
+</footer>
 
-    <footer class="cx-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="footer-brand"><i class="fa-solid fa-film"></i> CINEMA<span class="x">X</span></div>
-                    <p class="footer-desc">Premium movie booking by Moroana Machoene Karel.<br>Gqeberha, Eastern Cape, South Africa.</p>
-                    <div class="footer-socials">
-                        <a href="https://www.facebook.com/profile.php?id=61589396835528&sk=about" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/cinemax_sa/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="https://www.youtube.com/channel/UCWCBcH_dklfAXQwxtlm7mUw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+<button class="back-to-top" id="btt"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ══ MOVIE DATABASE — identical to booking.html ══ */
+const MOVIES = [
+    { id:1,  title:"Dune: Part Two",                        genre:"Sci-Fi",     tags:"Sci-Fi · Action · Adventure",        rating:8.7, duration:"2h 46m", price:90,  isNew:true,  isVip:false, poster:"images/dune 2-picture.png",           fallback:"https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",  desc:"Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family." },
+    { id:2,  title:"Interstellar",                          genre:"Sci-Fi",     tags:"Sci-Fi · Drama · Adventure",          rating:9.0, duration:"2h 49m", price:90,  isNew:false, isVip:false, poster:"images/Interstellar.png",              fallback:"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",   desc:"A team of astronauts travel through a wormhole near Saturn in search of a new home for humanity." },
+    { id:3,  title:"Blade Runner 2049",                     genre:"Sci-Fi",     tags:"Sci-Fi · Drama · Thriller",           rating:8.0, duration:"2h 44m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg", fallback:"", desc:"A young blade runner discovers a secret that could plunge what's left of society into chaos." },
+    { id:4,  title:"The Matrix",                            genre:"Sci-Fi",     tags:"Sci-Fi · Action · Thriller",          rating:8.7, duration:"2h 16m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg", fallback:"", desc:"A hacker discovers reality is a simulation and joins a rebellion against its machine overlords." },
+    { id:5,  title:"John Wick: Chapter 4",                  genre:"Action",     tags:"Action · Crime · Thriller",           rating:7.6, duration:"2h 49m", price:90,  isNew:false, isVip:true,  poster:"images/JohnWick4.jpg",                 fallback:"https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",   desc:"Legendary hit man John Wick takes his fight against the High Table global — from New York to Paris to Berlin." },
+    { id:6,  title:"Mission: Impossible – Final Reckoning",  genre:"Action",     tags:"Action · Adventure · Thriller",       rating:7.1, duration:"2h 49m", price:90,  isNew:true,  isVip:false, poster:"images/Mission Impossible.png",        fallback:"https://image.tmdb.org/t/p/w500/NNxYkU70HPurnNCSiCjYAmacwm.jpg",   desc:"Ethan Hunt and the IMF pursue a dangerous AI called the Entity threatening global intelligence networks." },
+    { id:7,  title:"Mad Max: Fury Road",                    genre:"Action",     tags:"Action · Adventure · Sci-Fi",         rating:8.1, duration:"2h 00m", price:90,  isNew:false, isVip:false, poster:"images/MadMax Fury Road.png",           fallback:"https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg",  desc:"In a post-apocalyptic wasteland, Max teams with Furiosa to flee a warlord and his army." },
+    { id:8,  title:"Top Gun: Maverick",                     genre:"Action",     tags:"Action · Drama",                      rating:8.3, duration:"2h 11m", price:90,  isNew:false, isVip:true,  poster:"https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17ljH.jpg", fallback:"", desc:"After more than thirty years, Maverick is still pushing the envelope as a top Naval aviator." },
+    { id:9,  title:"Gladiator II",                          genre:"Action",     tags:"Action · Adventure · Drama",          rating:7.2, duration:"2h 28m", price:90,  isNew:true,  isVip:false, poster:"https://image.tmdb.org/t/p/w500/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg", fallback:"", desc:"Years after witnessing his father's death, Lucius must enter the Colosseum to fight for Rome's future." },
+    { id:10, title:"The Godfather",                         genre:"Crime",      tags:"Crime · Drama",                       rating:9.2, duration:"2h 55m", price:90,  isNew:false, isVip:true,  poster:"images/The GodFather.png",             fallback:"https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsLegHnDmni0.jpg",   desc:"The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son." },
+    { id:11, title:"The Shawshank Redemption",              genre:"Drama",      tags:"Drama · Crime",                       rating:9.3, duration:"2h 22m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg", fallback:"", desc:"Two imprisoned men bond over years, finding solace and eventual redemption through acts of decency." },
+    { id:12, title:"Forrest Gump",                          genre:"Drama",      tags:"Drama · Romance · Comedy",             rating:8.8, duration:"2h 22m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg", fallback:"", desc:"The presidencies of Kennedy and Johnson and Vietnam through the eyes of an Alabama man with an IQ of 75." },
+    { id:13, title:"Oppenheimer",                           genre:"Drama",      tags:"Drama · Biography · History",         rating:8.3, duration:"3h 00m", price:90,  isNew:false, isVip:true,  poster:"https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", fallback:"", desc:"The story of J. Robert Oppenheimer's role in the development of the atomic bomb during WWII." },
+    { id:14, title:"Joker",                                 genre:"Drama",      tags:"Drama · Crime · Thriller",            rating:8.4, duration:"2h 02m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg", fallback:"", desc:"A failed comedian and social outcast descends into madness and becomes the iconic villain, the Joker." },
+    { id:15, title:"The Hangover",                          genre:"Comedy",     tags:"Comedy · Action",                     rating:7.8, duration:"1h 40m", price:90,  isNew:false, isVip:false, poster:"images/The Hangover.png",              fallback:"https://image.tmdb.org/t/p/w500/uluhlXubGu1VxU63X9VHCLWDAYP.jpg",  desc:"Three buddies wake up from a bachelor party in Las Vegas with no memory of the previous night." },
+    { id:16, title:"Superbad",                              genre:"Comedy",     tags:"Comedy",                              rating:7.6, duration:"1h 53m", price:90,  isNew:false, isVip:false, poster:"images/Superbad.png",                  fallback:"https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfBq.jpg",  desc:"Two co-dependent high school seniors try to buy alcohol for a party they hope will help them lose their virginity." },
+    { id:17, title:"Inside Out 2",                          genre:"Comedy",     tags:"Comedy · Animation",                  rating:7.9, duration:"1h 40m", price:90,  isNew:true,  isVip:false, poster:"https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg", fallback:"", desc:"Riley enters adolescence and her emotions, led by Joy, must make room for a wave of new, complicated feelings." },
+    { id:18, title:"Deadpool & Wolverine",                  genre:"Comedy",     tags:"Comedy · Action · Superhero",         rating:7.7, duration:"2h 07m", price:90,  isNew:true,  isVip:false, poster:"https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", fallback:"", desc:"Deadpool teams up with a reluctant Wolverine to face a common threat that imperils the multiverse." },
+    { id:19, title:"Solo Leveling",                         genre:"Anime",      tags:"Anime · Action · Fantasy",            rating:7.6, duration:"2h 49m", price:90,  isNew:true,  isVip:false, poster:"images/Solo Leveling.png",             fallback:"https://image.tmdb.org/t/p/w500/iEbEgHdMoxPZhCVOHJdw65m9Ber.jpg",  desc:"A weak hunter is chosen by a mysterious System giving him the rare ability to level up beyond any known limits." },
+    { id:20, title:"Demon Slayer: Kimetsu no Yaiba",        genre:"Anime",      tags:"Anime · Action · Adventure",          rating:8.6, duration:"2h 55m", price:90,  isNew:false, isVip:false, poster:"images/demon slayer.png",              fallback:"https://image.tmdb.org/t/p/w500/h8Rb9gBr48ODIwYZ2kvDTplyx0J.jpg",  desc:"Tanjiro sets out to become a demon slayer to avenge his family and cure his sister Nezuko." },
+    { id:21, title:"Spirited Away",                         genre:"Anime",      tags:"Anime · Fantasy · Adventure",         rating:8.6, duration:"2h 04m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg", fallback:"", desc:"A sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits." },
+    { id:22, title:"Your Name",                             genre:"Anime",      tags:"Anime · Romance · Fantasy",           rating:8.4, duration:"1h 52m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg", fallback:"", desc:"Two strangers find themselves linked in a bizarre way and begin searching for each other." },
+    { id:23, title:"Jujutsu Kaisen 0",                      genre:"Anime",      tags:"Anime · Action · Supernatural",       rating:7.9, duration:"1h 45m", price:90,  isNew:false, isVip:false, poster:"images/jujutsi kaisen 0.png",           fallback:"https://image.tmdb.org/t/p/w500/23zcblXCMjKdfv78oHBWB8OGRE8.jpg",  desc:"Yuta Okkotsu enrolls in Jujutsu High to control a Special Grade Cursed Spirit haunting him." },
+    { id:24, title:"Hereditary",                            genre:"Horror",     tags:"Horror · Thriller · Drama",           rating:7.3, duration:"2h 07m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/mXLOHHc1Zeuwsl4xYKjKh2280oL.jpg", fallback:"", desc:"After the matriarch of the Graham family passes away, her daughter's family begins to unravel." },
+    { id:25, title:"A Quiet Place",                         genre:"Horror",     tags:"Horror · Sci-Fi · Drama",             rating:7.5, duration:"1h 30m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/nAU74GmpUk7t5iklEp3bufwDq4n.jpg", fallback:"", desc:"A family struggles to survive in a post-apocalyptic world inhabited by blind monsters with an acute sense of hearing." },
+    { id:26, title:"Get Out",                               genre:"Horror",     tags:"Horror · Thriller · Drama",           rating:7.7, duration:"1h 44m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/tFXcEccSQMf3lfhfXKSU9iRBpa3.jpg", fallback:"", desc:"A young African-American man visits his white girlfriend's parents for the weekend, where unsettling truths emerge." },
+    { id:27, title:"Titanic",                               genre:"Romance",    tags:"Romance · Drama",                     rating:7.9, duration:"3h 14m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg", fallback:"", desc:"A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the ill-fated RMS Titanic." },
+    { id:28, title:"La La Land",                            genre:"Romance",    tags:"Romance · Drama · Music",             rating:8.0, duration:"2h 08m", price:90,  isNew:false, isVip:false, poster:"images/La La Land.png",                fallback:"https://image.tmdb.org/t/p/w500/ylXCdC106IKiarftHkcacasaAcb.jpg",  desc:"A jazz pianist and an aspiring actress fall in love while pursuing their dreams in Los Angeles." },
+    { id:29, title:"The Notebook",                          genre:"Romance",    tags:"Romance · Drama",                     rating:7.8, duration:"2h 03m", price:90,  isNew:false, isVip:false, poster:"images/The Notebook.png",              fallback:"https://image.tmdb.org/t/p/w500/qom1SZSENdmHFNZBXbtLAGselHK.jpg",  desc:"An elderly man reads a love story from a faded notebook to a fellow nursing home resident." },
+    { id:30, title:"Inception",                             genre:"Thriller",   tags:"Thriller · Sci-Fi · Action",          rating:8.8, duration:"2h 28m", price:90,  isNew:false, isVip:true,  poster:"https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg", fallback:"", desc:"A skilled thief is offered a chance to have his criminal record erased if he can plant an idea into a target's mind." },
+    { id:31, title:"Gone Girl",                             genre:"Thriller",   tags:"Thriller · Drama · Mystery",          rating:8.1, duration:"2h 29m", price:90,  isNew:false, isVip:false, poster:"images/Gone girl.png",                 fallback:"https://image.tmdb.org/t/p/w500/fOpDQ3fIy7bN2lUdGqJqzlFb3Ro.jpg", desc:"With his wife's disappearance having become the focus of an intense media circus, a man suspects his own innocence." },
+    { id:32, title:"Se7en",                                 genre:"Thriller",   tags:"Thriller · Crime · Drama",            rating:8.6, duration:"2h 07m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/6yoghtyTpznpBik8EngEmJskVUO.jpg", fallback:"", desc:"Two detectives, a rookie and a veteran, hunt a serial killer using the seven deadly sins as his modus operandi." },
+    { id:33, title:"1917",                                  genre:"War",        tags:"War · Drama · Action",                rating:8.2, duration:"1h 59m", price:90,  isNew:false, isVip:false, poster:"images/1917.png",                      fallback:"https://image.tmdb.org/t/p/w500/iZf0KyrE25z1sage4SYQLiiC3d8.jpg",  desc:"Two British soldiers are sent on a perilous mission to deliver a message that could stop a deadly attack on 1,600 men." },
+    { id:34, title:"Saving Private Ryan",                   genre:"War",        tags:"War · Drama · Action",                rating:8.6, duration:"2h 49m", price:90,  isNew:false, isVip:false, poster:"images/Saving Private Ryan.png",        fallback:"https://image.tmdb.org/t/p/w500/uqx37oZiqAlnckSQNkEQqd38GQY.jpg", desc:"Following the Normandy Landings, a group of US soldiers go behind enemy lines to retrieve a paratrooper." },
+    { id:35, title:"Avatar: The Way of Water",              genre:"Adventure",  tags:"Adventure · Sci-Fi · Fantasy",        rating:7.6, duration:"3h 12m", price:90,  isNew:false, isVip:true,  poster:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", fallback:"", desc:"Jake Sully and Ney'tiri have formed a family and are doing everything to stay together." },
+    { id:36, title:"Indiana Jones & The Dial of Destiny",   genre:"Adventure",  tags:"Adventure · Action · Fantasy",        rating:6.5, duration:"2h 34m", price:90,  isNew:true,  isVip:false, poster:"https://image.tmdb.org/t/p/w500/Af4bXE63pVsb2FtbW8uYIyPBadD.jpg", fallback:"", desc:"Archaeologist Indiana Jones races against time to retrieve a legendary artifact that can change the course of history." },
+    { id:37, title:"The Pursuit of Happyness",              genre:"Biography",  tags:"Biography · Drama",                   rating:8.0, duration:"1h 57m", price:90,  isNew:false, isVip:false, poster:"images/The Pasuite of Happiness.png",   fallback:"https://image.tmdb.org/t/p/w500/lFCECFRAfbFGrJgDRG4thM7bWBY.jpg", desc:"Based on the true story of Chris Gardner's nearly one-year struggle with homelessness while raising his toddler son." },
+    { id:38, title:"Bohemian Rhapsody",                     genre:"Biography",  tags:"Biography · Drama · Music",           rating:7.9, duration:"2h 14m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/lHu1wtNaczFPGFDTrjCSzeLPTKN.jpg", fallback:"", desc:"The story of the legendary British rock band Queen and lead singer Freddie Mercury's life up to Live Aid in 1985." },
+    { id:39, title:"Goodfellas",                            genre:"Crime",      tags:"Crime · Drama · Biography",           rating:8.7, duration:"2h 26m", price:90,  isNew:false, isVip:false, poster:"https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg", fallback:"", desc:"The story of Henry Hill and his life in the mob, covering his relationship with his wife Karen Hill and his friends." }
+];
+
+const GENRES = ["All", ...new Set(MOVIES.map(m => m.genre))];
+let activeGenre = "All";
+
+/* ── BUILD GENRE TABS ── */
+function buildTabs() {
+    document.getElementById('genreTabs').innerHTML = GENRES.map(g =>
+        `<button class="gtab${g === 'All' ? ' active' : ''}" onclick="setGenre('${g}', this)">${g}</button>`
+    ).join('');
+}
+
+function setGenre(g, btn) {
+    activeGenre = g;
+    document.querySelectorAll('.gtab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderMovies();
+}
+
+/* ── RENDER MOVIES ── */
+function renderMovies() {
+    const search = document.getElementById('searchInput').value.toLowerCase().trim();
+    const sort   = document.getElementById('sortSelect').value;
+
+    let filtered = MOVIES.filter(m => {
+        const matchG = activeGenre === 'All' || m.genre === activeGenre;
+        const matchS = !search || m.title.toLowerCase().includes(search) || m.tags.toLowerCase().includes(search);
+        return matchG && matchS;
+    });
+
+    if (sort === 'rating-desc')  filtered.sort((a,b) => b.rating - a.rating);
+    else if (sort === 'rating-asc')   filtered.sort((a,b) => a.rating - b.rating);
+    else if (sort === 'alpha')         filtered.sort((a,b) => a.title.localeCompare(b.title));
+    else if (sort === 'alpha-desc')    filtered.sort((a,b) => b.title.localeCompare(a.title));
+
+    document.getElementById('countDisplay').textContent = filtered.length;
+
+    const grid = document.getElementById('movieGrid');
+    if (!filtered.length) {
+        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-film-slash"></i><h3>No Movies Found</h3><p>Try a different search term or genre filter.</p></div>`;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(m => `
+        <div class="mc reveal" onclick="goBook('${encodeURIComponent(m.title)}')">
+            <div class="mc-img">
+                <img src="${m.poster}" alt="${m.title}" onerror="this.src='${m.fallback || 'https://placehold.co/400x600/111/555?text=?'}'">
+                ${m.isNew  ? '<span class="mc-badge">NEW</span>' : ''}
+                ${m.isVip  ? '<span class="mc-badge vip">VIP</span>' : ''}
+                <span class="mc-rating"><i class="fa-solid fa-star" style="font-size:.6rem"></i> ${m.rating}</span>
+                <div class="mc-overlay">
+                    <div class="ov-desc">${m.desc}</div>
+                    <div class="ov-btns">
+                        <button class="ov-book" onclick="event.stopPropagation();goBook('${encodeURIComponent(m.title)}')"><i class="fa-solid fa-ticket"></i> Book</button>
                     </div>
                 </div>
-                <div class="footer-col">
-                    <h5>Navigate</h5>
-                    <a href="index.html">Home</a><a href="about.html">About</a>
-                    <a href="qualifications.html">Qualifications</a><a href="services.html">Services</a>
-                    <a href="booking.html">Booking</a><a href="listedMovies.html">All Movies</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-                <div class="footer-col">
-                    <h5>Genres</h5>
-                    <a href="listedMovies.html">Action</a><a href="listedMovies.html">Sci-Fi</a>
-                    <a href="listedMovies.html">Anime</a><a href="listedMovies.html">Drama</a>
-                    <a href="listedMovies.html">Comedy</a><a href="listedMovies.html">Horror</a>
-                </div>
-                <div class="footer-col">
-                    <h5>Contact</h5>
-                    <a href="mailto:moroanakarell609@gmail.com"><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:7px"></i>moroanakarell609@gmail.com</a>
-                    <a href="tel:+27796617031"><i class="fa-solid fa-phone" style="color:var(--gold);margin-right:7px"></i>+27 79 661 7031</a>
-                    <a href="contact.html"><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:7px"></i>Gqeberha, Eastern Cape</a>
-                </div>
             </div>
-            <div class="footer-bottom">
-                <p>© 2026 CinemaX | Built by <span>Moroana Machoene Karel</span></p>
-                <p>Premium Movie Experience · ITP2020</p>
+            <div class="mc-body">
+                <div class="mc-title">${m.title}</div>
+                <div class="mc-genre">${m.tags}</div>
+                <div class="mc-meta"><span>${m.duration}</span><span class="dot"></span><span style="color:var(--gold)">★ ${m.rating}</span></div>
+            </div>
+            <div class="mc-footer">
+                <span class="mc-price">R${m.price}</span>
+                <button class="mc-book" onclick="event.stopPropagation();goBook('${encodeURIComponent(m.title)}')">Book</button>
             </div>
         </div>
-    </footer>
+    `).join('');
 
-    <button class="back-to-top" id="btt"><i class="fa-solid fa-chevron-up"></i></button>
+    /* re-observe reveals */
+    document.querySelectorAll('.mc.reveal:not(.in)').forEach(el => ro.observe(el));
+}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const ham = document.getElementById('ham'), drawer = document.getElementById('drawer'), drawClose = document.getElementById('drawClose');
-        ham.addEventListener('click', () => { ham.classList.toggle('open'); drawer.classList.add('open'); document.body.style.overflow = 'hidden'; });
-        drawClose.addEventListener('click', () => { ham.classList.remove('open'); drawer.classList.remove('open'); document.body.style.overflow = ''; });
-        drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); drawer.classList.remove('open'); document.body.style.overflow = ''; }));
-        const ro = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }); }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
-        function runCount(el, target, suffix) { let start = null; (function step(ts) { if (!start) start = ts; const p = Math.min((ts - start) / 1800, 1); el.textContent = Math.floor(p * target) + suffix; if (p < 1) requestAnimationFrame(step); })(performance.now()); }
-        const cntObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { if (e.target.id === 'cnt1') runCount(e.target, 39, '+'); if (e.target.id === 'cnt2') runCount(e.target, 5000, '+'); cntObs.unobserve(e.target); } }); }, { threshold: 0.5 });
-        ['cnt1', 'cnt2'].forEach(id => { const el = document.getElementById(id); if (el) cntObs.observe(el); });
-        const btt = document.getElementById('btt');
-        window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 400));
-        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    </script>
-    <script>
-        // Pre-select movie from URL parameter when redirected from listedMovies.goBook()
-        // Usage: booking.html?movie=<encoded title>
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const movie = params.get('movie');
-            if (!movie) return;
+function goBook(encodedTitle) {
+    window.location.href = 'booking.html?movie=' + encodedTitle;
+}
 
-            const decoded = decodeURIComponent(movie);
+/* ── INTERSECTION OBSERVER for card reveals ── */
+const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+}, { threshold: 0.08 });
 
-            // Option A — if you have a <select> for movies:
-            const select = document.getElementById('movieSelect'); // change to your actual ID
-            if (select) {
-                [...select.options].forEach(opt => {
-                    if (opt.text.toLowerCase() === decoded.toLowerCase()) {
-                        opt.selected = true;
-                        select.dispatchEvent(new Event('change'));
-                    }
-                });
-            }
+/* ── NAV ── */
+const ham = document.getElementById('ham');
+const drawer = document.getElementById('drawer');
+const drawClose = document.getElementById('drawClose');
+ham.addEventListener('click', () => { ham.classList.toggle('open'); drawer.classList.add('open'); document.body.style.overflow = 'hidden'; });
+drawClose.addEventListener('click', closeDrawer);
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+function closeDrawer() { ham.classList.remove('open'); drawer.classList.remove('open'); document.body.style.overflow = ''; }
 
-            // Option B — if you have a text input or hidden input for the movie name:
-            const movieInput = document.getElementById('movieName'); // change to your actual ID
-            if (movieInput) movieInput.value = decoded;
+/* ── BACK TO TOP ── */
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => btt.classList.toggle('show', scrollY > 400));
+btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-            // Option C — just show it somewhere on the page (e.g. heading or confirmation area):
-            const display = document.getElementById('selectedMovie'); // change to your actual ID
-            if (display) display.textContent = decoded;
-        });
-    </script>
+/* ── CTA REVEAL ── */
+const ctaObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ctaObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ctaObs.observe(el));
+
+/* ── INIT ── */
+buildTabs();
+renderMovies();
+
+/* ── Pre-select genre from URL param (e.g. listedMovies.html?genre=Anime) ── */
+const urlGenre = new URLSearchParams(window.location.search).get('genre');
+if (urlGenre) {
+    const matchTab = [...document.querySelectorAll('.gtab')].find(t => t.textContent === urlGenre);
+    if (matchTab) setGenre(urlGenre, matchTab);
+}
+</script>
 </body>
 </html>
